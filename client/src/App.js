@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Grid } from "react-bootstrap";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
+import { Grid, PageHeader } from "react-bootstrap";
 import "./App.css";
 
 // Components
@@ -15,10 +20,19 @@ class App extends Component {
       <Grid>
         <Router>
           <div>
-            <Route component={props => <Header {...props} />} />
-            <Route exact path="/" component={UsersSearch} />
-            <Route path="/users" component={UsersIndex} />
-            <Route path="/users/new" component={UsersNew} />
+            <Header />
+            <Switch>
+              <Route exact path="/" component={UsersIndex} />
+              <Route path="/users/new" component={UsersNew} />
+              <Route path="/users/search" component={UsersSearch} />
+              <Redirect from="/users" to="/" />
+              <Route
+                component={() =>
+                  <PageHeader>
+                    The page you've requested does not exist
+                  </PageHeader>}
+              />
+            </Switch>
           </div>
         </Router>
       </Grid>

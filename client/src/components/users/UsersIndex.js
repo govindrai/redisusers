@@ -12,7 +12,10 @@ export default class UsersIndex extends Component {
   }
 
   componentDidMount() {
-    axios.get("/api/users").then(({ data: users }) => this.setState({ users }));
+    axios.get("/api/users").then(({ data: users }) => {
+      console.log(users);
+      this.setState({ users });
+    });
   }
 
   render() {

@@ -16,10 +16,13 @@ export default function Header() {
       <Navbar.Collapse>
         <Nav pullRight>
           <LinkContainer exact to="/">
-            <NavItem>Search</NavItem>
-          </LinkContainer>
-          <LinkContainer to="/users">
             <NavItem>All Users</NavItem>
+          </LinkContainer>
+          <LinkContainer exact to="/users/search">
+            <NavItem>Search Users</NavItem>
+          </LinkContainer>
+          <LinkContainer exact to="/users/new">
+            <NavItem>Add User</NavItem>
           </LinkContainer>
         </Nav>
       </Navbar.Collapse>
