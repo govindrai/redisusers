@@ -1,26 +1,28 @@
-import React, { Component } from "react";
-import { Nav, NavItem } from "react-bootstrap";
+import React from "react";
+import { Nav, NavItem, Navbar } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
-export default class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.handleOnSelect = this.handleOnSelect.bind(this);
-  }
-
-  handleOnSelect(eventKey, e) {
-    this.props.history.push(e.target.pathname);
-  }
-
-  render() {
-    return (
-      <Nav bsStyle="tabs" activeKey={1} onSelect={this.handleOnSelect}>
-        <NavItem href="/" eventKey={1}>
-          Search
-        </NavItem>
-        <NavItem href="/users" eventKey={2}>
-          All Users
-        </NavItem>
-      </Nav>
-    );
-  }
+export default function Header() {
+  return (
+    <Navbar fluid collapseOnSelect>
+      <Navbar.Header>
+        <Navbar.Brand>
+          <LinkContainer to="/">
+            <a>User Management via Redis</a>
+          </LinkContainer>
+        </Navbar.Brand>
+        <Navbar.Toggle />
+      </Navbar.Header>
+      <Navbar.Collapse>
+        <Nav pullRight>
+          <LinkContainer exact to="/">
+            <NavItem>Search</NavItem>
+          </LinkContainer>
+          <LinkContainer to="/users">
+            <NavItem>All Users</NavItem>
+          </LinkContainer>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  );
 }
