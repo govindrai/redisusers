@@ -1,5 +1,6 @@
 // Modules
-const express = require("express"),
+const path = require("path"),
+  express = require("express"),
   https = require("https"),
   http = require("http"),
   bodyParser = require("body-parser"),
@@ -21,11 +22,12 @@ app.use(bodyParser.json());
 
 app.use("/api/users", users);
 
-app.all((req, res) => {
-  if (process.env.NODE_ENV === "production") {
-    res.sendFile("client/public/bundle.js");
-  }
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 http.createServer(app).listen(HTTP_PORT, err => console.log(err));
 https.createServer(httpsOptions, app).listen(HTTPS_PORT);

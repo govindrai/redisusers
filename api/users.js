@@ -4,10 +4,12 @@ const express = require("express"),
 const client = require("../config/redis");
 
 router.post("/", (req, res) => {
-  console.log("MADE A POST TO USERS");
   const { first_name, last_name, email, phone } = req.body;
   client.rpush("emails", email, (err, reply) => {
-    if (err) return console.log(err);
+    if (err) {
+      console.log("error on rpush", err);
+      return res.send(["ERROR on rpush", err]);
+    }
     client.hmset(
       email,
       "first_name",
@@ -19,25 +21,40 @@ router.post("/", (req, res) => {
       "phone",
       phone,
       (err, reply) => {
-        if (err) return console.log(err);
-        res.redirect("/");
+        if (err) {
+          console.log(err);
+          return res.send(["error on hmset", err]);
+        }
+        return res.send(reply);
       }
     );
   });
 });
 
+router.get("/test", (req, res) => {
+  client.hgetall("raigovind93@gmail.com", (err, reply) => {
+    res.send([reply, reply.toString()]);
+  });
+});
+
 router.get("/", (req, res) => {
-  client.get("emails", (err, reply) => {
+  client.lrange("emails", 0, 1, (err, reply) => {
     if (err) return console.log(err);
     if (reply) {
       Promise.all(
         reply.map(email => {
-          return client.hgetall(email, (err, reply) => {
-            if (err) return console.log(err);
-            return reply;
+          return new Promise((resolve, reject) => {
+            client.hgetall(email, (err, reply) => {
+              if (err) return reject(console.log(err));
+              resolve(reply);
+            });
           });
         })
-      ).then(replies => res.send(replies));
+      )
+        .then(replies => {
+          res.send(replies);
+        })
+        .catch(e => console.log(e));
     } else {
       res.send([reply, "reply is null"]);
     }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { ListGroup, ListGroupItem } from "react-bootstrap";
 
 export default class UsersIndex extends Component {
   constructor(props) {
@@ -10,20 +11,29 @@ export default class UsersIndex extends Component {
   }
 
   componentDidMount() {
-    axios.get("/api/users").then(res => console.log(res));
+    axios.get("/api/users").then(({ data: users }) => this.setState({ users }));
   }
 
   render() {
     return (
-      <ul>
+      <div>
+        <h1>Redis Users</h1>
         {this.state.users.map(user => {
           return (
-            <li key={user.email}>
-              {user.first_name}
-            </li>
+            <ListGroup key={user.email}>
+              <ListGroupItem>
+                Name: {`${user.first_name} ${user.last_name}`}
+              </ListGroupItem>
+              <ListGroupItem>
+                Email: {user.email}
+              </ListGroupItem>
+              <ListGroupItem>
+                Phone: {user.phone}
+              </ListGroupItem>
+            </ListGroup>
           );
         })}
-      </ul>
+      </div>
     );
   }
 }
