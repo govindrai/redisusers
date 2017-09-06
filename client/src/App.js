@@ -11,7 +11,7 @@ import "./App.css";
 // Components
 import UsersNew from "./components/users/UsersNew";
 import UsersIndex from "./components/users/UsersIndex";
-import UsersSearch from "./components/users/UsersSearch";
+import UsersShow from "./components/users/UsersShow";
 import Header from "./components/layouts/Header";
 
 class App extends Component {
@@ -24,7 +24,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={UsersIndex} />
               <Route path="/users/new" component={UsersNew} />
-              <Route path="/users/search" component={UsersSearch} />
+              <Route path="/users/search" component={UsersShow} />
               <Redirect from="/users" to="/" />
               <Route
                 component={() =>

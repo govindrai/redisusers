@@ -51,10 +51,40 @@ router.get("/", (req, res) => {
 
 router.get("/:emailAddress", (req, res) => {
   const { emailAddress } = req.params;
-  client.hgetall(emailAddress, (err, reply) => {
-    if (err) return console.log(err);
-    res.json(reply);
-  });
+  client
+    .hgetallAsync(emailAddress)
+    .then(user => res.json({ status: "OK", data: user }))
+    .catch(e => {
+      console.log(e);
+      res.json({ status: "ENDPOINT_ERROR", message: e });
+    });
+});
+
+router.delete("/:emailAddress", (req, res) => {
+  const { emailAddress } = req.params;
+  client
+    .delAsync(emailAddress)
+    .then(reply => {
+      if (reply) {
+        return client.lremAsync("emails", 0, emailAddress);
+      } else {
+        return res.json({
+          status: "EMAIL_NOT_FOUND",
+          message:
+            "No user with email was found. Therefore no user was deleted."
+        });
+      }
+    })
+    .then(reply =>
+      res.json({
+        status: "OK",
+        message: "User was successfully deleted"
+      })
+    )
+    .catch(e => {
+      console.log(e);
+      res.json({ status: "ENDPOINT_ERROR", message: e });
+    });
 });
 
 module.exports = router;

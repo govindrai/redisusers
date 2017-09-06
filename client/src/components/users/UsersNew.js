@@ -30,7 +30,6 @@ export default class UsersNew extends Component {
   handleOnChange(e) {
     let newState = { ...this.state };
     newState.user[e.target.name] = e.target.value;
-    console.log(newState);
     this.setState(newState);
   }
 
@@ -40,7 +39,7 @@ export default class UsersNew extends Component {
       .post("/api/users", this.state.user)
       .then(({ data: { status, message } }) => {
         if (status === "OK") {
-          this.props.history.push("/");
+          this.props.history.push("/?userCreated=true");
         } else {
           this.setState({
             ...this.state,
