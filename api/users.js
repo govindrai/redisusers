@@ -5,64 +5,56 @@ const client = require("../config/redis");
 
 router.post("/", (req, res) => {
   const { first_name, last_name, email, phone } = req.body;
-  client.rpush("emails", email, (err, reply) => {
-    if (err) {
-      console.log("error on rpush", err);
-      return res.send(["ERROR on rpush", err]);
-    }
-    client.hmset(
-      email,
-      "first_name",
-      first_name,
-      "last_name",
-      last_name,
-      "email",
-      email,
-      "phone",
-      phone,
-      (err, reply) => {
-        if (err) {
-          console.log(err);
-          return res.send(["error on hmset", err]);
-        }
-        return res.send(reply);
+  client
+    .existsAsync(email)
+    .then(reply => {
+      if (reply) {
+        return res.json({
+          status: "EXISTING_EMAIL",
+          message: "Email address already exists in Remote Dictionary Server"
+        });
       }
-    );
-  });
-});
-
-router.get("/test", (req, res) => {
-  client.hgetall("raigovind93@gmail.com", (err, reply) => {
-    res.send([reply, reply.toString()]);
-  });
+      return client.rpushAsync("emails", email);
+    })
+    .then(() => {
+      return client.hmsetAsync(email, { email, first_name, last_name, phone });
+    })
+    .then(() => {
+      return res.json({
+        status: "OK",
+        message: "User added to Remote Dictionary Server"
+      });
+    })
+    .catch(e => {
+      console.log(e);
+      return res.json({
+        status: "ENDPOINT_ERROR",
+        message: "We are sorry, our servers are down at the moment."
+      });
+    });
 });
 
 router.get("/", (req, res) => {
-  client.lrange("emails", 0, 1, (err, reply) => {
-    if (err) return console.log(err);
-    if (reply) {
-      Promise.all(
-        reply.map(email => {
-          return new Promise((resolve, reject) => {
-            client.hgetall(email, (err, reply) => {
-              if (err) return reject(console.log(err));
-              resolve(reply);
-            });
-          });
-        })
-      )
-        .then(replies => {
-          res.send(replies);
-        })
-        .catch(e => console.log(e));
-    } else {
-      res.send([reply, "reply is null"]);
-    }
-  });
+  client
+    .lrangeAsync("emails", 0, -1)
+    .then(reply => {
+      const promises = reply.map(email => client.hgetallAsync(email));
+      Promise.all(promises).then(users =>
+        res.json({ status: "OK", data: users })
+      );
+    })
+    .catch(e => {
+      console.log(e);
+      return res.json({ status: "ENDPOINT_ERROR", message: e });
+    });
 });
 
-router.get("/:user_id", (req, res) => {
-  res.send("MADE A GET TO USERS SHOW");
+router.get("/:emailAddress", (req, res) => {
+  const { emailAddress } = req.params;
+  client.hgetall(emailAddress, (err, reply) => {
+    if (err) return console.log(err);
+    res.json(reply);
+  });
 });
 
 module.exports = router;

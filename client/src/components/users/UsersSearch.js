@@ -46,16 +46,23 @@ export default class UsersSearch extends Component {
   render() {
     return (
       <div>
-        <PageHeader>
-          User Search <small>Email Address Search</small>
-        </PageHeader>
+        <PageHeader>Redis User Search</PageHeader>
         <form onSubmit={this.handleOnSubmit}>
           <FormGroup>
             <InputGroup>
+              <InputGroup.Addon>
+                <span
+                  role="img"
+                  aria-label="left-facing magnifying glass emoji"
+                >
+                  &#128269;
+                </span>
+              </InputGroup.Addon>
               <FormControl
                 type="text"
                 onChange={this.handleOnChange}
                 value={this.state.searchTerm}
+                placeholder="Search via email address"
               />
               <InputGroup.Button>
                 <Button type="submit">Search</Button>

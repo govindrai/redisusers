@@ -2,14 +2,20 @@
   "name": "RedisUsers",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "8.1.X",
+    "npm": "5.4.0"
+  },
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "postinstall": ""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "method-override": "^2.3.9",

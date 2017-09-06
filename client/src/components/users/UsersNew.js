@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";
+import {
+  FormGroup,
+  FormControl,
+  ControlLabel,
+  Button,
+  PageHeader,
+  Alert
+} from "react-bootstrap";
 import axios from "axios";
 
 export default class UsersNew extends Component {
@@ -7,10 +14,13 @@ export default class UsersNew extends Component {
     super(props);
 
     this.state = {
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone: ""
+      user: {
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone: ""
+      },
+      errorMessage: ""
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -18,25 +28,47 @@ export default class UsersNew extends Component {
   }
 
   handleOnChange(e) {
-    this.setState({ ...this.state, [e.target.name]: e.target.value });
+    let newState = { ...this.state };
+    newState.user[e.target.name] = e.target.value;
+    console.log(newState);
+    this.setState(newState);
   }
 
   handleOnSubmit(e) {
     e.preventDefault();
     axios
-      .post("/api/users", this.state)
-      .then(res => {
-        if (res.data === "OK") {
+      .post("/api/users", this.state.user)
+      .then(({ data: { status, message } }) => {
+        if (status === "OK") {
           this.props.history.push("/");
+        } else {
+          this.setState({
+            ...this.state,
+            errorMessage: `An entry with email address ${this.state.user
+              .email} already exists in the system. Please try again with a different email.`
+          });
         }
       })
       .catch(e => console.log(e));
   }
 
   render() {
+    let ErrorComponent;
+    if (this.state.errorMessage) {
+      ErrorComponent = (
+        <Alert bsStyle="danger">
+          <h4>Oh snap! You got an error!</h4>
+          <p>
+            {this.state.errorMessage}
+          </p>
+        </Alert>
+      );
+    }
+
     return (
       <div>
-        <h1>Add User</h1>
+        {ErrorComponent}
+        <PageHeader>Add User</PageHeader>
         <form onSubmit={this.handleOnSubmit} action="/api/users" method="post">
           <FormGroup>
             <ControlLabel>First Name</ControlLabel>
