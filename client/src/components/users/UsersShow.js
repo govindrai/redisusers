@@ -9,7 +9,6 @@ import {
   Alert
 } from "react-bootstrap";
 import axios from "axios";
-
 import RenderUser from "./RenderUser";
 
 export default class UsersSearch extends Component {
@@ -21,19 +20,13 @@ export default class UsersSearch extends Component {
       loading: false,
       errorMessage: ""
     };
-    this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleOnSubmit = this.handleOnSubmit.bind(this);
   }
 
-  handleOnChange(e) {
-    this.setState({ searchTerm: e.target.value });
-  }
+  handleChange = e => this.setState({ searchTerm: e.target.value });
 
-  handleOnSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
-    const self = this;
     this.setState({
-      ...self.state,
       loading: true,
       user: null,
       errorMessage: ""
@@ -41,28 +34,20 @@ export default class UsersSearch extends Component {
     setTimeout(
       () =>
         axios
-          .get(`/api/users/${self.state.searchTerm}`)
+          .get(`/api/users/${this.state.searchTerm}`)
           .then(({ data: { data: user } }) => {
-            if (user) {
-              self.setState({
-                user,
-                searchTerm: "",
-                loading: false,
-                errorMessage: ""
-              });
-            } else {
-              self.setState({
-                ...this.state,
-                errorMessage: `No user with email address ${self.state
-                  .searchTerm} exists in the system. Please try again with a different email address.`,
-                searchTerm: "",
-                loading: false
-              });
-            }
+            this.setState((prevState, props) => ({
+              user: user ? user : prevState.user,
+              errorMessage: user
+                ? prevState.errorMessage
+                : `No user with email address ${prevState.searchTerm} exists in the system. Please try again with a different email address.`,
+              searchTerm: "",
+              loading: false
+            }));
           }),
       500
     );
-  }
+  };
 
   render() {
     return (
@@ -73,7 +58,7 @@ export default class UsersSearch extends Component {
             <strong>Holy guacamole! </strong>
             {this.state.errorMessage}
           </Alert>}
-        <form onSubmit={this.handleOnSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <FormGroup>
             <InputGroup>
               <InputGroup.Addon>
@@ -86,7 +71,7 @@ export default class UsersSearch extends Component {
               </InputGroup.Addon>
               <FormControl
                 type="text"
-                onChange={this.handleOnChange}
+                onChange={this.handleChange}
                 value={this.state.searchTerm}
                 placeholder="Search via email address"
               />
