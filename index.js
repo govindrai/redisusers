@@ -1,8 +1,6 @@
 // Modules
 const path = require("path"),
   express = require("express"),
-  https = require("https"),
-  http = require("http"),
   bodyParser = require("body-parser"),
   methodOverride = require("method-override");
 
@@ -11,15 +9,13 @@ const users = require("./api/users");
 
 // Local Variables
 const app = express(),
-  HTTP_PORT = process.env.PORT || 8000,
-  HTTPS_PORT = process.env.PORT || 9000,
-  httpsOptions = {};
+  HTTP_PORT = process.env.PORT || 8000;
 
-// parse application/x-www-form-urlencoded
+// Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
-// parse application/json
 app.use(bodyParser.json());
 
+// Router Middleware
 app.use("/api/users", users);
 
 if (process.env.NODE_ENV === "production") {
@@ -29,7 +25,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-http.createServer(app).listen(HTTP_PORT, err => {
-  return console.log(err);
+app.listen(HTTP_PORT, err => {
+  if (err) return console.log(err);
   console.log(`Listening on port ${HTTP_PORT}`);
 });
