@@ -29,5 +29,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-http.createServer(app).listen(HTTP_PORT, err => console.log(err));
-https.createServer(httpsOptions, app).listen(HTTPS_PORT);
+http.createServer(app).listen(HTTP_PORT, err => {
+  return console.log(err);
+  console.log(`Listening on port ${HTTP_PORT}`);
+});
