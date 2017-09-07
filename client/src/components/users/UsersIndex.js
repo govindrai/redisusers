@@ -52,26 +52,41 @@ export default class UsersIndex extends Component {
     const { search } = this.props.location;
     return (
       <div>
+        {/* PAGE HEADER */}
         <PageHeader>Redis Users</PageHeader>
+
+        {/* ALERTS */}
         {search === "?userCreated=true" &&
           <AlertContainer
             show={this.state.showUserCreatedAlert}
-            name="UserCreatedAlert"
             bsStyle="success"
+            name="UserCreatedAlert"
             onDismiss={this.handleDismiss}
           >
             <strong>Holy guacamole!</strong> A user was successfully created!
             <Link to="/users/new"> Add another one!</Link>
           </AlertContainer>}
         {search === "?userDeleted=true" &&
-          <Alert bsStyle="info" onDismiss={this.handleAlertDismiss}>
+          <AlertContainer
+            show={this.state.showUserDeletedAlert}
+            bsStyle="info"
+            name="UserDeletedAlert"
+            onDismiss={this.handleDismiss}
+          >
             <strong>Woah!</strong> A user was successfully deleted.
-          </Alert>}
+          </AlertContainer>}
         {this.state.users.length === 0 &&
-          <Alert bsStyle="warning" onDismiss={this.handleAlertDismiss}>
-            <strong>Holy guacamole!</strong> There's are currently no users in
+          <AlertContainer
+            show={this.state.showNoUsersAlert}
+            bsStyle="warning"
+            name="NoUsersAlert"
+            onDismiss={this.handleDismiss}
+          >
+            <strong>Holy guacamole! </strong>There's are currently no users in
             the system. <Link to="/users/new">Add one!</Link>
-          </Alert>}
+          </AlertContainer>}
+
+        {/* USERS */}
         {this.state.users.map(user =>
           <RenderUser
             key={user.email}
