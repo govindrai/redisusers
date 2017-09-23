@@ -53,11 +53,12 @@ export default class UsersSearch extends Component {
     return (
       <div>
         <PageHeader>Redis User Search</PageHeader>
-        {this.state.errorMessage &&
+        {this.state.errorMessage && (
           <Alert bsStyle="warning">
             <strong>Holy guacamole! </strong>
             {this.state.errorMessage}
-          </Alert>}
+          </Alert>
+        )}
         <form onSubmit={this.handleSubmit}>
           <FormGroup>
             <InputGroup>
@@ -82,16 +83,18 @@ export default class UsersSearch extends Component {
           </FormGroup>
         </form>
         <h3>
-          {this.state.loading &&
+          {this.state.loading && (
             <Image
               responsive
               className="center-block"
               alt="loading spinner"
               src="/spin.svg"
-            />}
+            />
+          )}
         </h3>
-        {this.state.user &&
-          <RenderUser {...this.props} user={this.state.user} />}
+        {this.state.user && (
+          <RenderUser {...this.props} user={this.state.user} />
+        )}
       </div>
     );
   }

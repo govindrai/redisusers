@@ -8,7 +8,7 @@ export default class RenderUser extends Component {
   }
 
   handleOnClick(e) {
-    this.props.deleteUser(e);
+    this.props.deleteUser(e.target.dataset.email, this.props.history);
   }
 
   render() {
