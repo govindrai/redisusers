@@ -35,14 +35,14 @@ export default class UsersIndex extends Component {
 
   render = () => {
     console.log("index just rendered");
-    const { search } = this.props.location;
+    console.log(this.props);
     return (
       <div>
         {/* PAGE HEADER */}
         <PageHeader>Redis Users</PageHeader>
 
         {/* ALERTS */}
-        {search === "?userCreated=true" && (
+        {this.props.userCreated && (
           <AlertContainer
             show={this.state.showUserCreatedAlert}
             bsStyle="success"
@@ -53,7 +53,7 @@ export default class UsersIndex extends Component {
             <Link to="/users/new"> Add another one!</Link>
           </AlertContainer>
         )}
-        {search === "?userDeleted=true" && (
+        {this.props.userDeleted && (
           <AlertContainer
             show={this.state.showUserDeletedAlert}
             bsStyle="info"
@@ -101,17 +101,12 @@ export default class UsersIndex extends Component {
 }
 
 function AlertContainer(props) {
-  // console.log(props);
-  if (props.show) {
-    return (
-      <Alert
-        bsStyle={props.bsSytle}
-        onDismiss={() => props.onDismiss(props.name)}
-      >
-        {props.children}
-      </Alert>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <Alert
+      bsStyle={props.bsSytle}
+      onDismiss={() => props.onDismiss(props.name)}
+    >
+      {props.children}
+    </Alert>
+  );
 }

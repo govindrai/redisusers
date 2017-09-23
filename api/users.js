@@ -9,10 +9,7 @@ router.post("/", (req, res) => {
     .existsAsync(email)
     .then(reply => {
       if (reply) {
-        return res.json({
-          status: "EXISTING_EMAIL",
-          message: "Email address already exists in Remote Dictionary Server"
-        });
+        throw new Error("EXISTING_EMAIL");
       }
       return client.rpushAsync("emails", email);
     })
@@ -26,7 +23,12 @@ router.post("/", (req, res) => {
       });
     })
     .catch(e => {
-      console.log(e);
+      if (e.name === "EXISTING_EMAIL") {
+        return res.json({
+          status: e.name,
+          message: "Email address already exists in Remote Dictionary Server"
+        });
+      }
       return res.json({
         status: "ENDPOINT_ERROR",
         message: "We are sorry, our servers are down at the moment."

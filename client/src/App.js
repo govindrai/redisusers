@@ -19,15 +19,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      noUsers: false,
       userCreated: false,
       userDeleted: false
     };
   }
-
-  showNoUsersAlert = () => {
-    this.setState({ noUsers: true });
-  };
 
   showUserCreatedAlert = () => {
     this.setState({ userCreated: true });
@@ -67,7 +62,15 @@ class App extends Component {
                   />
                 )}
               />
-              <Route path="/users/new" component={UsersNew} />
+              <Route
+                path="/users/new"
+                component={props => (
+                  <UsersNew
+                    showUserCreatedAlert={this.showUserCreatedAlert}
+                    {...props}
+                  />
+                )}
+              />
               <Route path="/users/search" component={UsersShow} />
               <Redirect from="/users" to="/" />
               <Route component={NotFound} />

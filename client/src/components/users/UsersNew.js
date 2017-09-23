@@ -22,51 +22,45 @@ export default class UsersNew extends Component {
       },
       errorMessage: ""
     };
-
-    this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleOnSubmit = this.handleOnSubmit.bind(this);
   }
 
-  handleOnChange(e) {
+  handleOnChange = e => {
     let newState = { ...this.state };
     newState.user[e.target.name] = e.target.value;
     this.setState(newState);
-  }
+  };
 
-  handleOnSubmit(e) {
+  handleOnSubmit = e => {
     e.preventDefault();
     axios
       .post("/api/users", this.state.user)
-      .then(({ data: { status, message } }) => {
+      .then(({ data: { status, message: errorMessage } }) => {
         if (status === "OK") {
-          this.props.history.push("/?userCreated=true");
+          // this.props.history.push("/");
+          this.props.showUserCreatedAlert();
         } else {
-          this.setState({
-            ...this.state,
-            errorMessage: `An entry with email address ${this.state.user
-              .email} already exists in the system. Please try again with a different email.`
-          });
+          if (status === "EXISTING_EMAIL") {
+            this.setState({
+              errorMessage: `An entry with email address ${this.state.user
+                .email} already exists in the system. Please try again with a different email.`
+            });
+          } else {
+            this.setState({ errorMessage });
+          }
         }
       })
       .catch(e => console.log(e));
-  }
+  };
 
   render() {
-    let ErrorComponent;
-    if (this.state.errorMessage) {
-      ErrorComponent = (
-        <Alert bsStyle="danger">
-          <h4>Oh snap! You got an error!</h4>
-          <p>
-            {this.state.errorMessage}
-          </p>
-        </Alert>
-      );
-    }
-
     return (
       <div>
-        {ErrorComponent}
+        {this.state.errorMessage && (
+          <Alert bsStyle="danger">
+            <h4>Oh snap! You got an error!</h4>
+            <p>{this.state.errorMessage}</p>
+          </Alert>
+        )}
         <PageHeader>Add User</PageHeader>
         <form onSubmit={this.handleOnSubmit} action="/api/users" method="post">
           <FormGroup>
