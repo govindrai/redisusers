@@ -18,17 +18,6 @@ export default class UsersIndex extends Component {
     setTimeout(this.getUsers, 1000);
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("bro");
-    console.log("ComponetWillReceProps just happened");
-    console.log("Nextprops", nextProps);
-  }
-
-  // componentWillUnmount() {
-  //   console.log("Component is unmounting");
-  //   this.props.hideAlerts();
-  // }
-
   getUsers = () => {
     axios.get("/api/users").then(({ data: { status, data } }) => {
       if (status === "OK") {
@@ -44,9 +33,12 @@ export default class UsersIndex extends Component {
     this.setState({ ["show" + alertName]: false });
   };
 
+  componentWillReceiveProps(newprops) {
+    console.log("COMPONENT RECEIVING NEW PROPS");
+    console.log("new props", newprops);
+  }
+
   render = () => {
-    console.log("Index just rendered");
-    console.log(this.props);
     return (
       <div>
         {/* PAGE HEADER */}
@@ -56,7 +48,6 @@ export default class UsersIndex extends Component {
         {this.props.location.state &&
         this.props.location.state.userCreated && (
           <AlertContainer
-            show={this.state.showUserCreatedAlert}
             bsStyle="success"
             name="UserCreatedAlert"
             onDismiss={this.handleDismiss}
@@ -65,9 +56,9 @@ export default class UsersIndex extends Component {
             <Link to="/users/new"> Add another one!</Link>
           </AlertContainer>
         )}
-        {this.props.userDeleted && (
+        {this.props.location.state &&
+        this.props.location.state.userDeleted && (
           <AlertContainer
-            show={this.state.showUserDeletedAlert}
             bsStyle="info"
             name="UserDeletedAlert"
             onDismiss={this.handleDismiss}
@@ -78,7 +69,6 @@ export default class UsersIndex extends Component {
         {!this.state.fetchingUsers &&
         this.state.users.length === 0 && (
           <AlertContainer
-            show={this.state.showNoUsersAlert}
             bsStyle="warning"
             name="NoUsersAlert"
             onDismiss={this.handleDismiss}
@@ -109,12 +99,7 @@ export default class UsersIndex extends Component {
 }
 
 function AlertContainer(props) {
-  return (
-    <Alert
-      bsStyle={props.bsSytle}
-      onDismiss={() => props.onDismiss(props.name)}
-    >
-      {props.children}
-    </Alert>
-  );
+  return <Alert bsStyle={props.bsStyle}>{props.children}</Alert>;
 }
+
+// {/*onDismiss={() => props.onDismiss(props.name)}*/}

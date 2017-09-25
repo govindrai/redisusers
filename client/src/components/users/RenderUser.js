@@ -7,9 +7,10 @@ export default class RenderUser extends Component {
     const { email } = e.target.dataset;
     axios.delete(`/api/users/${email}`).then(({ data: { status } }) => {
       if (status === "OK") {
-        debugger;
-        // this.props.history.push("/");
-        // this.props.showUserDeletedAlert();
+        this.props.history.push({
+          pathname: "/",
+          state: { userDeleted: true }
+        });
       }
     });
   };

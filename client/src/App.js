@@ -15,28 +15,7 @@ import Header from "./components/layouts/Header";
 import NotFound from "./components/layouts/NotFound";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userCreated: false,
-      userDeleted: false
-    };
-  }
-
-  showUserCreatedAlert = () => {
-    this.setState({ userCreated: true });
-  };
-
-  showUserDeletedAlert = () => {
-    this.setState({ userDeleted: true });
-  };
-
-  hideAlerts = () => {
-    this.setState({ userCreated: false, userDeleted: false });
-  };
-
   render() {
-    console.log("app just rendered");
     return (
       <Grid>
         <Router>
@@ -46,23 +25,11 @@ class App extends Component {
               <Route
                 exact
                 path="/"
-                component={props => (
-                  <UsersIndex
-                    {...props}
-                    {...this.state}
-                    showUserDeletedAlert={this.showUserDeletedAlert}
-                    hideAlerts={this.hideAlerts}
-                  />
-                )}
+                component={props => <UsersIndex {...props} />}
               />
               <Route
                 path="/users/new"
-                component={props => (
-                  <UsersNew
-                    showUserCreatedAlert={this.showUserCreatedAlert}
-                    {...props}
-                  />
-                )}
+                component={props => <UsersNew {...props} />}
               />
               <Route path="/users/search" component={UsersShow} />
               <Redirect from="/users" to="/" />
