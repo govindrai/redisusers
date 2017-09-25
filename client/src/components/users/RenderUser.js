@@ -1,33 +1,30 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
 
 export default class RenderUser extends Component {
-  constructor(props) {
-    super(props);
-    this.handleOnClick = this.handleOnClick.bind(this);
-  }
-
-  handleOnClick(e) {
-    this.props.deleteUser(e.target.dataset.email, this.props.history);
-  }
+  deleteUser = e => {
+    const { email } = e.target.dataset;
+    axios.delete(`/api/users/${email}`).then(({ data: { status } }) => {
+      if (status === "OK") {
+        debugger;
+        // this.props.history.push("/");
+        // this.props.showUserDeletedAlert();
+      }
+    });
+  };
 
   render() {
     const { user } = this.props;
     const fullName = `${user.first_name} ${user.last_name}`;
     return (
       <ListGroup key={user.email}>
-        <ListGroupItem>
-          Name: {fullName}
-        </ListGroupItem>
-        <ListGroupItem>
-          Email: {user.email}
-        </ListGroupItem>
-        <ListGroupItem>
-          Phone: {user.phone}
-        </ListGroupItem>
+        <ListGroupItem>Name: {fullName}</ListGroupItem>
+        <ListGroupItem>Email: {user.email}</ListGroupItem>
+        <ListGroupItem>Phone: {user.phone}</ListGroupItem>
         <ListGroupItem>
           <Button
-            onClick={this.handleOnClick}
+            onClick={this.deleteUser}
             data-email={user.email}
             bsStyle="primary"
           >

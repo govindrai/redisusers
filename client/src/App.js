@@ -27,33 +27,16 @@ class App extends Component {
     this.setState({ userCreated: true });
   };
 
-  hideUserCreatedAlert = () => {
-    this.setState({ userCreated: false });
-  };
-
   showUserDeletedAlert = () => {
     this.setState({ userDeleted: true });
   };
 
-  hideUserDeletedAlert = () => {
-    this.setState({ userDeleted: false });
+  hideAlerts = () => {
+    this.setState({ userCreated: false, userDeleted: false });
   };
 
-  // // DOES NOT HAVE ACCESS TO HISTORY
-  // deleteUser = (email, history) => {
-  //   axios.delete(`/api/users/${email}`).then(({ data: { status } }) => {
-  //     if (status === "OK") {
-  //       history.push("/?userDeleted=true");
-  //       this.getUsers();
-  //     }
-  //   });
-  // };
-  //
-  componentDidMount() {
-    console.log("APP.js component just mounted");
-  }
-
   render() {
+    console.log("app just rendered");
     return (
       <Grid>
         <Router>
@@ -68,7 +51,7 @@ class App extends Component {
                     {...props}
                     {...this.state}
                     showUserDeletedAlert={this.showUserDeletedAlert}
-                    hideUserCreatedAlert={this.hideUserCreatedAlert}
+                    hideAlerts={this.hideAlerts}
                   />
                 )}
               />

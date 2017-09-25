@@ -18,9 +18,16 @@ export default class UsersIndex extends Component {
     setTimeout(this.getUsers, 1000);
   }
 
-  componentWillUnmount() {
-    this.props.hideUserCreatedAlert();
+  componentWillReceiveProps(nextProps) {
+    console.log("bro");
+    console.log("ComponetWillReceProps just happened");
+    console.log("Nextprops", nextProps);
   }
+
+  // componentWillUnmount() {
+  //   console.log("Component is unmounting");
+  //   this.props.hideAlerts();
+  // }
 
   getUsers = () => {
     axios.get("/api/users").then(({ data: { status, data } }) => {
@@ -38,6 +45,7 @@ export default class UsersIndex extends Component {
   };
 
   render = () => {
+    console.log("Index just rendered");
     console.log(this.props);
     return (
       <div>
@@ -45,7 +53,8 @@ export default class UsersIndex extends Component {
         <PageHeader>Redis Users</PageHeader>
 
         {/* ALERTS */}
-        {this.props.userCreated && (
+        {this.props.location.state &&
+        this.props.location.state.userCreated && (
           <AlertContainer
             show={this.state.showUserCreatedAlert}
             bsStyle="success"
@@ -92,12 +101,7 @@ export default class UsersIndex extends Component {
         )}
         {!this.state.fetchingUsers &&
           this.state.users.map(user => (
-            <RenderUser
-              key={user.email}
-              {...this.props}
-              deleteUser={this.props.deleteUser}
-              user={user}
-            />
+            <RenderUser key={user.email} user={user} {...this.props} />
           ))}
       </div>
     );
