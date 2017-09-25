@@ -86,7 +86,7 @@ export default class UsersIndex extends Component {
               responsive
               className="center-block"
               alt="loading spinner"
-              src="/spin.svg"
+              src="/Spin.svg"
             />
           </h3>
         )}
