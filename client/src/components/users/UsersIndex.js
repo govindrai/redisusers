@@ -38,7 +38,7 @@ export default class UsersIndex extends Component {
   };
 
   handleDismiss = alertName => {
-    this.setState({ ["show" + alertName]: false });
+    this.props.history.replace("/", { [alertName]: false });
   };
 
   render = () => {
@@ -52,7 +52,7 @@ export default class UsersIndex extends Component {
         this.props.location.state.userCreated && (
           <AlertContainer
             bsStyle="success"
-            name="UserCreatedAlert"
+            name="userCreated"
             onDismiss={this.handleDismiss}
           >
             <strong>Success!</strong> User with email{" "}
@@ -64,7 +64,7 @@ export default class UsersIndex extends Component {
         this.props.location.state.userDeleted && (
           <AlertContainer
             bsStyle="info"
-            name="UserDeletedAlert"
+            name="userDeleted"
             onDismiss={this.handleDismiss}
           >
             <strong>Woah!</strong> User with email{" "}
@@ -73,11 +73,7 @@ export default class UsersIndex extends Component {
         )}
         {!this.state.fetchingUsers &&
         this.state.users.length === 0 && (
-          <AlertContainer
-            bsStyle="warning"
-            name="NoUsersAlert"
-            onDismiss={this.handleDismiss}
-          >
+          <AlertContainer bsStyle="warning" name="noUsers">
             <strong>Holy guacamole! </strong>There's are currently no users in
             the system. <Link to="/users/new">Add one!</Link>
           </AlertContainer>
@@ -110,7 +106,17 @@ export default class UsersIndex extends Component {
 }
 
 function AlertContainer(props) {
-  return <Alert bsStyle={props.bsStyle}>{props.children}</Alert>;
+  if (props.onDismiss) {
+    return (
+      <Alert
+        bsStyle={props.bsStyle}
+        onDismiss={() => props.onDismiss(props.name)}
+      >
+        {props.children}
+      </Alert>
+    );
+  } else {
+    return <Alert bsStyle={props.bsStyle}>{props.children}</Alert>;
+  }
 }
 
-// {/*onDismiss={() => props.onDismiss(props.name)}*/}
