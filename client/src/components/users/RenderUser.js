@@ -9,8 +9,10 @@ export default class RenderUser extends Component {
       if (status === "OK") {
         this.props.history.push({
           pathname: "/",
-          state: { userDeleted: true }
+          state: { userDeleted: true, email }
         });
+        this.props.startFetchingUsers();
+        this.props.fetchUsers();
       }
     });
   };

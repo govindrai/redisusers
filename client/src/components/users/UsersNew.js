@@ -39,7 +39,7 @@ export default class UsersNew extends Component {
           // this.props.showUserCreatedAlert();
           this.props.history.push({
             pathname: "/",
-            state: { userCreated: true }
+            state: { userCreated: true, email: this.state.user.email }
           });
         } else {
           if (status === "EXISTING_EMAIL") {

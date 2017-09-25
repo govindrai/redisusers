@@ -15,28 +15,31 @@ export default class UsersIndex extends Component {
   }
 
   componentDidMount() {
-    setTimeout(this.getUsers, 1000);
+    this.fetchUsers();
   }
 
-  getUsers = () => {
-    axios.get("/api/users").then(({ data: { status, data } }) => {
-      if (status === "OK") {
-        return this.setState({
-          users: data,
-          fetchingUsers: false
-        });
-      }
-    });
+  startFetchingUsers = () => {
+    this.setState({ fetchingUsers: true });
+  };
+
+  fetchUsers = () => {
+    setTimeout(
+      () =>
+        axios.get("/api/users").then(({ data: { status, data } }) => {
+          if (status === "OK") {
+            return this.setState({
+              users: data,
+              fetchingUsers: false
+            });
+          }
+        }),
+      1000
+    );
   };
 
   handleDismiss = alertName => {
     this.setState({ ["show" + alertName]: false });
   };
-
-  componentWillReceiveProps(newprops) {
-    console.log("COMPONENT RECEIVING NEW PROPS");
-    console.log("new props", newprops);
-  }
 
   render = () => {
     return (
@@ -52,7 +55,8 @@ export default class UsersIndex extends Component {
             name="UserCreatedAlert"
             onDismiss={this.handleDismiss}
           >
-            <strong>Success!</strong> A user was successfully created!
+            <strong>Success!</strong> User with email{" "}
+            {this.props.location.state.email} was successfully created!
             <Link to="/users/new"> Add another one!</Link>
           </AlertContainer>
         )}
@@ -63,7 +67,8 @@ export default class UsersIndex extends Component {
             name="UserDeletedAlert"
             onDismiss={this.handleDismiss}
           >
-            <strong>Woah!</strong> A user was successfully deleted.
+            <strong>Woah!</strong> User with email{" "}
+            {this.props.location.state.email} was successfully deleted.
           </AlertContainer>
         )}
         {!this.state.fetchingUsers &&
@@ -91,7 +96,13 @@ export default class UsersIndex extends Component {
         )}
         {!this.state.fetchingUsers &&
           this.state.users.map(user => (
-            <RenderUser key={user.email} user={user} {...this.props} />
+            <RenderUser
+              key={user.email}
+              fetchUsers={this.fetchUsers}
+              startFetchingUsers={this.startFetchingUsers}
+              user={user}
+              {...this.props}
+            />
           ))}
       </div>
     );
