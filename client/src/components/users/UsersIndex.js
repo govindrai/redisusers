@@ -18,6 +18,10 @@ export default class UsersIndex extends Component {
     setTimeout(this.getUsers, 1000);
   }
 
+  componentWillUnmount() {
+    this.props.hideUserCreatedAlert();
+  }
+
   getUsers = () => {
     axios.get("/api/users").then(({ data: { status, data } }) => {
       if (status === "OK") {
@@ -34,7 +38,6 @@ export default class UsersIndex extends Component {
   };
 
   render = () => {
-    console.log("index just rendered");
     console.log(this.props);
     return (
       <div>
@@ -49,7 +52,7 @@ export default class UsersIndex extends Component {
             name="UserCreatedAlert"
             onDismiss={this.handleDismiss}
           >
-            <strong>Holy guacamole!</strong> A user was successfully created!
+            <strong>Success!</strong> A user was successfully created!
             <Link to="/users/new"> Add another one!</Link>
           </AlertContainer>
         )}
@@ -63,7 +66,8 @@ export default class UsersIndex extends Component {
             <strong>Woah!</strong> A user was successfully deleted.
           </AlertContainer>
         )}
-        {this.state.users.length === 0 && (
+        {!this.state.fetchingUsers &&
+        this.state.users.length === 0 && (
           <AlertContainer
             show={this.state.showNoUsersAlert}
             bsStyle="warning"

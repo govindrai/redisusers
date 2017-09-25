@@ -36,8 +36,8 @@ export default class UsersNew extends Component {
       .post("/api/users", this.state.user)
       .then(({ data: { status, message: errorMessage } }) => {
         if (status === "OK") {
-          // this.props.history.push("/");
           this.props.showUserCreatedAlert();
+          this.props.history.push("/");
         } else {
           if (status === "EXISTING_EMAIL") {
             this.setState({

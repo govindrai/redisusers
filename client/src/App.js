@@ -6,7 +6,6 @@ import {
   Redirect
 } from "react-router-dom";
 import { Grid } from "react-bootstrap";
-import axios from "axios";
 
 // Components
 import UsersNew from "./components/users/UsersNew";
@@ -28,8 +27,16 @@ class App extends Component {
     this.setState({ userCreated: true });
   };
 
+  hideUserCreatedAlert = () => {
+    this.setState({ userCreated: false });
+  };
+
   showUserDeletedAlert = () => {
     this.setState({ userDeleted: true });
+  };
+
+  hideUserDeletedAlert = () => {
+    this.setState({ userDeleted: false });
   };
 
   // // DOES NOT HAVE ACCESS TO HISTORY
@@ -41,6 +48,10 @@ class App extends Component {
   //     }
   //   });
   // };
+  //
+  componentDidMount() {
+    console.log("APP.js component just mounted");
+  }
 
   render() {
     return (
@@ -56,9 +67,8 @@ class App extends Component {
                   <UsersIndex
                     {...props}
                     {...this.state}
-                    showNoUsersAlert={this.showNoUsersAlert}
-                    showUserCreatedAlert={this.showUserCreatedAlert}
                     showUserDeletedAlert={this.showUserDeletedAlert}
+                    hideUserCreatedAlert={this.hideUserCreatedAlert}
                   />
                 )}
               />
