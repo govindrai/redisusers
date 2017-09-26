@@ -1,7 +1,9 @@
 {
   "name": "RedisUsers",
   "version": "1.0.0",
-  "description": "",
+  "description":
+    "React/Node.js webapp that relies solely on Redis and its lightweight, persistent nature to store user data. Fast without the bulk of a RDBMS or NoSQL data store.",
+  "repository": "https://github.com/govindrai/redisusers.git",
   "engines": {
     "node": "8.1.X",
     "npm": "5.4.0"
