@@ -1,8 +1,7 @@
 {
   "name": "RedisUsers",
   "version": "1.0.0",
-  "description":
-    "React/Node.js webapp that relies solely on Redis and its lightweight, persistent nature to store user data. Fast without the bulk of a RDBMS or NoSQL data store.",
+  "description": "React/Node.js webapp that relies solely on Redis and its lightweight, persistent nature to store user data. Fast without the bulk of a RDBMS or NoSQL data store.",
   "repository": "https://github.com/govindrai/redisusers.git",
   "engines": {
     "node": "8.1.X",
@@ -11,9 +10,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev":
-      "concurrently \"nodemon -L index.js\" \"npm run start --prefix client\"",
-    "postinstall": "npm i --prefix client && npm run build --prefix client"
+    "dev": "concurrently \"nodemon -L index.js\" \"npm run start --prefix client\"",
+    "postinstall": "npm i --prefix client && npm run build --prefix client",
+    "redis": "~/redis-5.0.3/src/redis-server"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +21,9 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
-    "method-override": "^2.3.9",
+    "react": "^16.7.0",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.7.0",
     "redis": "^2.8.0"
   },
   "devDependencies": {
