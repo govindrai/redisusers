@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, ControlLabel, Button, PageHeader, Alert, Form } from 'react-bootstrap';
+import { FormGroup, FormControl, Button, PageHeader, Alert, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 export default class UsersNew extends Component {
@@ -61,19 +61,19 @@ export default class UsersNew extends Component {
         <PageHeader>Add User</PageHeader>
         <Form onSubmit={this.handleOnSubmit} action="/api/users" method="post">
           <FormGroup>
-            <ControlLabel>First Name</ControlLabel>
+            <Form.Label>First Name</Form.Label>
             <FormControl type="text" onChange={this.handleOnChange} name="first_name" value={this.state.first_name} />
           </FormGroup>
           <FormGroup>
-            <ControlLabel>Last Name</ControlLabel>
+            <Form.Label>Last Name</Form.Label>
             <FormControl type="text" onChange={this.handleOnChange} name="last_name" value={this.state.last_name} />
           </FormGroup>
           <FormGroup>
-            <ControlLabel>Email</ControlLabel>
+            <Form.Label>Email</Form.Label>
             <FormControl type="text" onChange={this.handleOnChange} name="email" value={this.state.email} />
           </FormGroup>
           <FormGroup>
-            <ControlLabel>Phone</ControlLabel>
+            <Form.Label>Phone</Form.Label>
             <FormControl type="text" onChange={this.handleOnChange} name="phone" value={this.state.phone} />
           </FormGroup>
           <Button variant="primary" type="submit">
