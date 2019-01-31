@@ -1,13 +1,6 @@
-import React, { Component } from "react";
-import {
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Button,
-  PageHeader,
-  Alert
-} from "react-bootstrap";
-import axios from "axios";
+import React, { Component } from 'react';
+import { FormGroup, FormControl, ControlLabel, Button, PageHeader, Alert, Form } from 'react-bootstrap';
+import axios from 'axios';
 
 export default class UsersNew extends Component {
   constructor(props) {
@@ -15,12 +8,12 @@ export default class UsersNew extends Component {
 
     this.state = {
       user: {
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: ""
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone: '',
       },
-      errorMessage: ""
+      errorMessage: '',
     };
   }
 
@@ -33,19 +26,20 @@ export default class UsersNew extends Component {
   handleOnSubmit = e => {
     e.preventDefault();
     axios
-      .post("/api/users", this.state.user)
+      .post('/api/users', this.state.user)
       .then(({ data: { status, message: errorMessage } }) => {
-        if (status === "OK") {
+        if (status === 'OK') {
           // this.props.showUserCreatedAlert();
           this.props.history.push({
-            pathname: "/",
-            state: { userCreated: true, email: this.state.user.email }
+            pathname: '/',
+            state: { userCreated: true, email: this.state.user.email },
           });
         } else {
-          if (status === "EXISTING_EMAIL") {
+          if (status === 'EXISTING_EMAIL') {
             this.setState({
-              errorMessage: `An entry with email address ${this.state.user
-                .email} already exists in the system. Please try again with a different email.`
+              errorMessage: `An entry with email address ${
+                this.state.user.email
+              } already exists in the system. Please try again with a different email.`,
             });
           } else {
             this.setState({ errorMessage });
@@ -65,45 +59,27 @@ export default class UsersNew extends Component {
           </Alert>
         )}
         <PageHeader>Add User</PageHeader>
-        <form onSubmit={this.handleOnSubmit} action="/api/users" method="post">
+        <Form onSubmit={this.handleOnSubmit} action="/api/users" method="post">
           <FormGroup>
             <ControlLabel>First Name</ControlLabel>
-            <FormControl
-              type="text"
-              onChange={this.handleOnChange}
-              name="first_name"
-              value={this.state.first_name}
-            />
+            <FormControl type="text" onChange={this.handleOnChange} name="first_name" value={this.state.first_name} />
           </FormGroup>
           <FormGroup>
             <ControlLabel>Last Name</ControlLabel>
-            <FormControl
-              type="text"
-              onChange={this.handleOnChange}
-              name="last_name"
-              value={this.state.last_name}
-            />
+            <FormControl type="text" onChange={this.handleOnChange} name="last_name" value={this.state.last_name} />
           </FormGroup>
           <FormGroup>
             <ControlLabel>Email</ControlLabel>
-            <FormControl
-              type="text"
-              onChange={this.handleOnChange}
-              name="email"
-              value={this.state.email}
-            />
+            <FormControl type="text" onChange={this.handleOnChange} name="email" value={this.state.email} />
           </FormGroup>
           <FormGroup>
             <ControlLabel>Phone</ControlLabel>
-            <FormControl
-              type="text"
-              onChange={this.handleOnChange}
-              name="phone"
-              value={this.state.phone}
-            />
+            <FormControl type="text" onChange={this.handleOnChange} name="phone" value={this.state.phone} />
           </FormGroup>
-          <Button type="submit">Create User</Button>
-        </form>
+          <Button variant="primary" type="submit">
+            Create User
+          </Button>
+        </Form>
       </div>
     );
   }
