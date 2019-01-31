@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, Button, PageHeader, Alert, Form } from 'react-bootstrap';
+import { FormGroup, FormControl, Button, Alert, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 export default class UsersNew extends Component {
@@ -50,6 +50,7 @@ export default class UsersNew extends Component {
   };
 
   render() {
+    console.log(Form.Label);
     return (
       <div>
         {this.state.errorMessage && (
@@ -58,7 +59,7 @@ export default class UsersNew extends Component {
             <p>{this.state.errorMessage}</p>
           </Alert>
         )}
-        <PageHeader>Add User</PageHeader>
+        <h1>Add User</h1>
         <Form onSubmit={this.handleOnSubmit} action="/api/users" method="post">
           <FormGroup>
             <Form.Label>First Name</Form.Label>
@@ -76,7 +77,7 @@ export default class UsersNew extends Component {
             <Form.Label>Phone</Form.Label>
             <FormControl type="text" onChange={this.handleOnChange} name="phone" value={this.state.phone} />
           </FormGroup>
-          <Button variant="primary" type="submit">
+          <Button type="submit">
             Create User
           </Button>
         </Form>

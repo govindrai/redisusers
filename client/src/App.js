@@ -5,7 +5,7 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import { Grid } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 // Components
 import UsersNew from "./components/users/UsersNew";
@@ -17,7 +17,7 @@ import NotFound from "./components/layouts/NotFound";
 class App extends Component {
   render() {
     return (
-      <Grid>
+      <Container>
         <Router>
           <div>
             <Header />
@@ -37,7 +37,7 @@ class App extends Component {
             </Switch>
           </div>
         </Router>
-      </Grid>
+      </Container>
     );
   }
 }

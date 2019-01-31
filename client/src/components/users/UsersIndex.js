@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { PageHeader, Alert, Image } from 'react-bootstrap';
+import {Alert, Image } from 'react-bootstrap';
 
 import RenderUser from './RenderUser';
 
@@ -45,7 +45,7 @@ export default class UsersIndex extends Component {
     return (
       <div>
         {/* PAGE HEADER */}
-        <PageHeader>User Directory</PageHeader>
+        <h1>User Directory</h1>
 
         {/* ALERTS */}
         {this.props.location.state && this.props.location.state.userCreated && (

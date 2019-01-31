@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, FormControl, Button, PageHeader, InputGroup, Image, Alert } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Button, InputGroup, Image, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import RenderUser from './RenderUser';
 
@@ -42,7 +42,7 @@ export default class UsersSearch extends Component {
   render() {
     return (
       <div>
-        <PageHeader>Search Users</PageHeader>
+        <h1>Search Users</h1>
         {this.state.errorMessage && (
           <Alert bsStyle="warning">
             <strong>Holy guacamole! </strong>
@@ -51,15 +51,13 @@ export default class UsersSearch extends Component {
         )}
         <Form onSubmit={this.handleSubmit}>
           <InputGroup>
-            <FormControl
-              type="text"
-              onChange={this.handleChange}
-              value={this.state.searchTerm}
-              placeholder="&#128269; Search via email address"
-            />
-            <Button variant="primary" type="submit">
-              Search
-            </Button>
+            <InputGroup.Prepend><InputGroup.Text>&#128269;</InputGroup.Text></InputGroup.Prepend>
+            <FormControl type="text" onChange={this.handleChange} value={this.state.searchTerm} placeholder="Search via email address" />
+            <InputGroup.Append>
+              <Button variant="primary" type="submit">
+                Search
+              </Button>
+            </InputGroup.Append>
           </InputGroup>
         </Form>
         <h3>{this.state.loading && <Image responsive className="center-block" alt="loading spinner" src="/Spin.svg" />}</h3>
