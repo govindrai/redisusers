@@ -1,4 +1,4 @@
-# User Management using Redis
+# RedisUsers
 
 <img src="https://raw.githubusercontent.com/govindrai/redisusers/master/client/public/macbookpro.png" />
 
@@ -8,7 +8,7 @@ React/Node.js webapp that relies solely on Redis and its lightweight, persistent
 
 ## Use case
 
-I had been using Redis for a while now to store my session data but never interacted with redis directory, nor really new the commands. This wa a project meant as a deep dive in understanding the core functionality of redis.
+I have been using Redis for a while now to store my session data but I only ever interacted with redis using a third party lib, never directly. Curios about how the Redis datastore was different from other datastores, this is a project meant as a deep dive in understanding the core functionality of redis and useful redis commands.
 
 ## Technologies Used
 
@@ -19,4 +19,4 @@ I had been using Redis for a while now to store my session data but never intera
 - Node-Redis
 - ES6
 - React-Bootstrap
--Axios
+- Axios
